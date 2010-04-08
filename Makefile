@@ -33,24 +33,29 @@ USER_OPTIONS = -DCLEAR_BSS_SEGMENT -DISR_DEBUGGING_CODE -DSP2_CONFIG
 # Compilation/assembly control
 #
 
+INCLUDE_OPT = -I
+EXTINCLUDES = -I-
+
 #
 # We only want to include from the current directory and ~wrc/include
 #
-INCLUDES = -I. -I/home/fac/wrc/include
+INCLUDES = $(EXTINCLUDES) $(INCLUDE_OPT) . $(INCLUDE_OPT) /home/fac/wrc/include
 
 #
 # Compilation/assembly/linking commands and options
 #
 CPP = cpp
-CPPFLAGS = $(USER_OPTIONS) -nostdinc -I- $(INCLUDES)
+CPPFLAGS = $(USER_OPTIONS) -nostdinc $(INCLUDES)
 
 CC = gcc
-CFLAGS = -fno-builtin -Wall -Wstrict-prototypes $(CPPFLAGS)
+CFLAGS = -fno-builtin -Wall -Wstrict-prototypes $(CPPFLAGS) -std=c99
 
 AS = gas
 ASFLAGS =
 
 LD = gld
+
+NM = gnm
 
 #		
 # Transformation rules - these ensure that all compilation
@@ -109,8 +114,20 @@ SOURCES = $(BOOT_SRC) $(S_SRC) $(C_SRC)
 #
 # Targets for remaking bootable image of the program
 #
-# Default target:  usb.image
-#
+
+all:
+	if [ `uname -s` = "Linux" ]; then	\
+		$(MAKE)				\
+			CC="gcc -m32"		\
+			AS="as --32"		\
+			LD="ld -melf_i386"	\
+			NM="nm"			\
+			INCLUDE_OPT="-iquote"	\
+			EXTINCLUDES=""		\
+			floppy.image		;\
+	else					\
+		$(MAKE)	usb.image		;\
+	fi
 
 usb.image: bootstrap.b prog.b prog.nl BuildImage Offsets #prog.dis 
 	./BuildImage -d usb -o usb.image -b bootstrap.b prog.b 0x10000
@@ -154,7 +171,7 @@ BuildImage:	BuildImage.c
 	$(CC) -o BuildImage BuildImage.c
 
 Offsets:	Offsets.c processes.h queues.h
-	$(CC) $(INCLUDES) -o Offsets Offsets.c
+	$(CC) $(INCLUDES) -fno-builtin-fork -o Offsets Offsets.c
 
 #
 # Clean out this directory
@@ -168,7 +185,7 @@ clean:
 #
 
 prog.nl: prog.o
-	nm -Bng prog.o | pr -w80 -3 > prog.nl
+	$(NM) -Bng prog.o | pr -w80 -3 > prog.nl
 
 #
 # Generate a disassembly
@@ -190,26 +207,26 @@ depend:
 bootstrap.o: bootstrap.h
 startup.o: bootstrap.h
 isr_stubs.o: bootstrap.h
-ulibs.o: syscalls.h headers.h /home/fac/wrc/include/x86arch.h
-c_io.o: c_io.h startup.h support.h /home/fac/wrc/include/x86arch.h
-support.o: startup.h support.h c_io.h /home/fac/wrc/include/x86arch.h
+ulibs.o: syscalls.h headers.h x86arch.h
+c_io.o: c_io.h startup.h support.h 
+support.o: startup.h support.h c_io.h 
 support.o: bootstrap.h
 clock.o: headers.h clock.h processes.h queues.h stacks.h scheduler.h
-clock.o: startup.h /home/fac/wrc/include/uart.h
-clock.o: /home/fac/wrc/include/x86arch.h
+clock.o: startup.h uart.h
+clock.o: 
 klibc.o: headers.h
 processes.o: headers.h processes.h queues.h stacks.h
 queues.o: headers.h queues.h processes.h stacks.h
 scheduler.o: headers.h scheduler.h processes.h queues.h stacks.h
 sio.o: headers.h sio.h queues.h processes.h stacks.h scheduler.h startup.h
-sio.o: /home/fac/wrc/include/uart.h /home/fac/wrc/include/x86arch.h
+sio.o: uart.h 
 stacks.o: headers.h stacks.h queues.h
-syscalls.o: headers.h syscalls.h /home/fac/wrc/include/x86arch.h bootstrap.h
+syscalls.o: headers.h syscalls.h  bootstrap.h
 syscalls.o: clock.h processes.h queues.h stacks.h scheduler.h sio.h startup.h
 syscalls.o: ulib.h user.h
 system.o: headers.h ulib.h processes.h queues.h stacks.h system.h types.h
 system.o: clock.h scheduler.h sio.h syscalls.h
-system.o: /home/fac/wrc/include/x86arch.h user.h bootstrap.h startup.h
+system.o:  user.h bootstrap.h startup.h
 system.o: support.h
 ulibc.o: headers.h
 user.o: headers.h user.h processes.h queues.h stacks.h

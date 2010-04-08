@@ -182,7 +182,7 @@ static void init_idt( void ){
 ** Name:	__panic
 */
 void __panic( char *reason ){
-	asm( "cli" );
+	__asm__( "cli" );
 	c_printf( "\nPANIC: %s\nHalting...", reason );
 	for(;;){
 		;

@@ -158,7 +158,7 @@ void process_file( char *name, char *addr ){
 	** Make sure the program will fit!
 	*/
 	if( address + n_sectors * 512 > 0x0009ffff ){
-		fprintf( stderr, "Program %s too large to start at 0x%08x\n",
+		fprintf( stderr, "Program %s too large to start at 0x%08lx\n",
 		    name, address );
 		quit( NULL, FALSE );
 	}
@@ -170,7 +170,7 @@ void process_file( char *name, char *addr ){
 	/*
 	** Looks good: report and store the information.
 	*/
-	fprintf( stderr, "%s: %d sectors, loaded at 0x%x\n",
+	fprintf( stderr, "%s: %d sectors, loaded at 0x%lx\n",
 	    name, n_sectors, address );
 
 	info[ --n_info ] = n_sectors;

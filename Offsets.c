@@ -14,6 +14,7 @@
 */
 
 #include <stdio.h>
+#undef NULL
 
 #include "headers.h"
 
