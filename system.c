@@ -44,6 +44,10 @@
 ** first user-level process.  The name is taken from there.
 */
 
+#include "disk.h"
+#include "string.h"
+#include "diskutil.h"
+
 void _init( void ) {
 	pcb_t *pcb;
 	uint32_t *ptr;
@@ -102,6 +106,23 @@ void _init( void ) {
 	__install_isr( INT_VEC_TIMER, _isr_clock );
 	__install_isr( INT_VEC_SYSCALL, _isr_syscall );
 	__install_isr( INT_VEC_SERIAL_PORT_1, _isr_sio );
+
+	#define DISKNO 0
+	char *string = "Hello World!";
+	int len = strlen(string) + 1;
+	error_t err = _disk_write(DISKNO, 0, 1, _buf_to_sector(string, len));
+	if( err != NO_ERROR ) {
+		_kpanic(_disk_strerror(err));
+	}
+	c_printf("Wrote string: %s\n", string);
+	sector_t sector_read_data[1];
+	err = _disk_read( DISKNO, 0, 1, sector_read_data );
+	if( err != NO_ERROR ) {
+		_kpanic(_disk_strerror(err));
+	}
+	c_printf("Read back string: %s\n", _sector_to_buf(sector_read_data, 1));
+	_kpanic("Done");
+
 
 	/*
 	** Create the initial process
