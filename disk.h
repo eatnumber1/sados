@@ -24,4 +24,8 @@ error_t _disk_write( disk_t diskno, diskaddr_t addr, disk_size_t count, sector_t
 // Convert an LBA error into a human-readable string
 char *_disk_strerror( error_t code );
 
+sector_t *_buf_to_sector( void *buf, int len );
+
+void *_sector_to_buf( sector_t *sectors, int num );
+
 #endif

@@ -46,7 +46,6 @@
 
 #include "disk.h"
 #include "string.h"
-#include "diskutil.h"
 
 void _init( void ) {
 	pcb_t *pcb;

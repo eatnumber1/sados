@@ -11,10 +11,10 @@
 #
 U_C_SRC = clock.c klibc.c processes.c queues.c scheduler.c \
 	sio.c stacks.c syscalls.c system.c ulibc.c user.c  \
-	ramdisk.c diskutil.c string.c
+	ramdisk.c disk.c string.c kalloc.c
 U_C_OBJ = clock.o klibc.o processes.o queues.o scheduler.o \
 	sio.o stacks.o syscalls.o system.o ulibc.o user.o  \
-	ramdisk.o diskutil.o string.o
+	ramdisk.o disk.o string.o kalloc.o
 U_S_SRC = klibs.S ulibs.S
 U_S_OBJ = klibs.o ulibs.o
 U_LIBS	=
