@@ -3,16 +3,23 @@
 #include "headers.h"
 #include "disk.h"
 
-#define DISK_SIZE 512
+#define DISK_SIZE 11
 #define MAX_ADDR SECTOR_SIZE * DISK_SIZE - 1
 
-// I wish I could dynamically allocate this.
 static char disk[DISK_SIZE * SECTOR_SIZE];
 
 static error_t check_sane( disk_t diskno, diskaddr_t addr, disk_size_t count ) {
-	if( diskno != 0 ) return BAD_DISK;
+	if( diskno.diskno != 0 && diskno.partno != 0 ) return BAD_DISK;
 	if( count < 0 || addr + count > MAX_ADDR ) return BAD_ADDRESS;
 	return NO_ERROR;
+}
+
+disk_size_t _disk_size( disk_t diskno ) {
+	return DISK_SIZE;
+}
+
+disk_size_b_t _disk_size_b( disk_t diskno ) {
+	return _disk_size(diskno) * SECTOR_SIZE;
 }
 
 error_t _disk_read( disk_t diskno, diskaddr_t addr, disk_size_t count, sector_t* dest ) {
