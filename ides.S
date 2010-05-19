@@ -19,9 +19,9 @@ _callbios:
     pushl   %cs // because function returns with retf, which pops IP then CS
     call    %ebp
 
-    cli
-label:
-    jmp     label
+//    cli
+//label:
+//    jmp     label
 
     //movl    $96, %edi
     //lcall   *(%edi)
