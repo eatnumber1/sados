@@ -22,21 +22,25 @@ _callbios:
     movl    8(%ebp), %ebp
     pushl   %cs // because function returns with retf, which pops IP then CS
 
-    pushl   %esp
-    pushl   $regstring
-    call    c_printf
-    addl    $8, %esp
+    //pushl   %esp
+    //pushl   $regstring
+    //call    c_printf
+    //addl    $8, %esp
 
     call    %ebp
 
-    pushl   %esp
-    pushl   $regstring
-    call    c_printf
-    addl    $8, %esp
+    //pushl   %esp
+    //pushl   $regstring
+    //call    c_printf
+    //addl    $8, %esp
 
-    cli
-label:
-    jmp     label
+    addl    $4, %esp
+
+//esp is +4
+
+    //cli
+//label:
+    //jmp     label
 
     //movl    $96, %edi
     //lcall   *(%edi)
