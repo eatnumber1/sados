@@ -90,9 +90,13 @@ void findbios() {
 	//      "3"  (b->entry_point), 
          //     "D"  (&bios32_indirect));
 
+    _kpanic("got to before callbios");
+
     _callbios(b->entry_point);
 
     c_printf ("Returned from callbios\n");
+
+    _kpanic("returned");
 
 
     switch (return_code) {
