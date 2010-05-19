@@ -17,7 +17,9 @@ _callbios:
     movl    $0, %ebx
     movl    8(%ebp), %ebp
     pushl   %cs // because function returns with retf, which pops IP then CS
-    call    _kpanic
+    cli
+label:
+    jmp     label
     call    %ebp
     //movl    $96, %edi
     //lcall   *(%edi)
