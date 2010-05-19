@@ -2,26 +2,21 @@
 
 #include "ide.h"
 
-.data
-
-//str:    .ascii "$PCI"
-
-
 .text
 
 .globl _callbios
 
 _callbios:
-//    enter   $0, $0
+    enter   $0, $0
     pushl   %ebx
     pushl   %ecx
     pushl   %edx
-//    pushl   %cs
 
     movl    $0x49435024, %eax // $PCI
     movl    $0, %ebx
-    movl    4(%ebp), %edx
+    movl    8(%ebp), %edx
 //    cli
+    pushl   %cs
     call    *(%edx)
 
     popl    %edx

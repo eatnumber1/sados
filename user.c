@@ -14,7 +14,7 @@
 
 #include "user.h"
 #include "processes.h"
-#include "ide.h"
+//#include "ide.h"
 
 /*
 ** USER PROCESSES
@@ -715,14 +715,14 @@ void init_main( uint_t n, ... ) {
 		exit( STAT_FAILURE );
 	}
 
-    pid = fork (PRIO_STD);
-    if (pid < 0) {
-        c_puts( "init: can't fork test\n");
-    } else if (pid == 0) {
-        exec( findbios_main, 0);
-        c_puts ("init: can't exec findbios\n");
-        exit(STAT_FAILURE);
-    }
+    //pid = fork (PRIO_STD);
+    //if (pid < 0) {
+    //    c_puts( "init: can't fork test\n");
+    //} else if (pid == 0) {
+    //    exec( findbios_main, 0);
+    //    c_puts ("init: can't exec findbios\n");
+    //    exit(STAT_FAILURE);
+    //}
 
 #ifdef SPAWN_A
 	pid = fork( PRIO_STD );
