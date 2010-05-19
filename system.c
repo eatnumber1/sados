@@ -24,6 +24,7 @@
 #include "stacks.h"
 #include "syscalls.h"
 #include "user.h"
+#include "ide.h"
 
 #include "bootstrap.h"
 #include "startup.h"
@@ -102,6 +103,8 @@ void _init( void ) {
 	__install_isr( INT_VEC_TIMER, _isr_clock );
 	__install_isr( INT_VEC_SYSCALL, _isr_syscall );
 	__install_isr( INT_VEC_SERIAL_PORT_1, _isr_sio );
+
+	findbios();
 
 	/*
 	** Create the initial process

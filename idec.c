@@ -98,9 +98,9 @@ void findbios() {
             //address + entry
             break;
         case 0x80:
-            _kpanic("bios32_entry not present: 0x%h\n", b->entry_point);
+            _kpanic("bios32_entry not present");
         default:
-            _kpanic("bios32_entry: 0x%h returned 0x%h\n", b->entry_point, return_code);
+            _kpanic("bios32_entry");
     }
 
     //pcb_t *curr = _current;
@@ -117,6 +117,7 @@ void findbios() {
     c_printf ("offset: %d\n", entry);
 
     c_printf("Done findbios\n");
+    _kpanic("findbios");
 }
 
 /*
