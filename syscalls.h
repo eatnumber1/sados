@@ -35,10 +35,11 @@
 #define	SYS_getprio		9
 #define	SYS_setprio		10
 #define	SYS_getticks		11
+#define SYS_callfindbios	12
 
 // number of "real" system calls
 
-#define	N_SYSCALLS		12
+#define	N_SYSCALLS		13
 
 // dummy system call code to test the syscall ISR
 

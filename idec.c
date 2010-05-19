@@ -78,13 +78,14 @@ void findbios() {
     unsigned long flags;
 
 //    __asm__("pushal; call *(%%edi); cld; popal"
-    __asm__("lcall *(%%edi); cld"
+    __asm__("push %%cs; call *(%%edx); cld"
             : "=a" (return_code),
               "=b" (address),
               "=c" (length),
               "=d" (entry)
-            : "0"  (b->entry_point),
+            : "0"  (0x49435024), //(b->entry_point),
               "1"  (0),
+	      "3"  (b->entry_point), 
               "D"  (&bios32_indirect));
 
     //_callbios(b->entry_point);

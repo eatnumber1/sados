@@ -23,6 +23,7 @@
 #include "scheduler.h"
 #include "sio.h"
 #include "startup.h"
+#include "ide.h"
 
 // also need the exit() prototype
 #include "ulib.h"
@@ -56,6 +57,10 @@ static void (*_syscalls[N_SYSCALLS])( context_t * );
 /*
 ** PRIVATE FUNCTIONS
 */
+
+static void _sys_callfindbios( context_t *context ) {
+	findbios();
+}
 
 /*
 ** Second-level syscall handlers
