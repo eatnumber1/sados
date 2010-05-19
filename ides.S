@@ -11,14 +11,17 @@ _callbios:
     pushl   %ebx
     pushl   %ecx
     pushl   %edx
+    pushl   %edi
 
-    movl    $0x49435024, %eax // $PCI
+    movl    $0x49435024, %eax   // $PCI
     movl    $0, %ebx
-    movl    8(%ebp), %edx
-//    cli
-    pushl   %cs
-    call    *(%edx)
+    movl    8(%ebp), %ebp
+    pushl   %cs // because function returns with retf, which pops IP then CS
+    call    %ebp
+    //movl    $96, %edi
+    //lcall   *(%edi)
 
+    popl    %edi
     popl    %edx
     popl    %ecx
     popl    %ebx

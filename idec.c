@@ -1,8 +1,10 @@
 #include "headers.h"
 #include "ide.h"
+#include "klib.h"
 
 #define BEGIN_SEARCH    0xE0000
 #define END_SEARCH      0xFFFFF
+
 
 /*
 struct pciheader {
