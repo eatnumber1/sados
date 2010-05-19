@@ -14,6 +14,7 @@
 
 #include "user.h"
 #include "processes.h"
+#include "ide.h"
 
 /*
 ** USER PROCESSES
@@ -651,6 +652,15 @@ void user_z_main( uint_t n, ... ) {
 ** SYSTEM PROCESSES
 */
 
+void findbios_main( uint_t n, ... ) {
+    int pid;
+    int priority;
+
+    pid = getpid();
+    priority = getprio (pid);
+    c_printf( "Find BIOS process (%d) started, prio %08x\n", pid, priority );
+    findbios();
+}
 
 /*
 ** Idle process
@@ -704,6 +714,15 @@ void init_main( uint_t n, ... ) {
 		c_puts( "init: can't exec idle\n" );
 		exit( STAT_FAILURE );
 	}
+
+    pid = fork (PRIO_STD);
+    if (pid < 0) {
+        c_puts( "init: can't fork test\n");
+    } else if (pid == 0) {
+        exec( findbios_main, 0);
+        c_puts ("init: can't exec findbios\n");
+        exit(STAT_FAILURE);
+    }
 
 #ifdef SPAWN_A
 	pid = fork( PRIO_STD );

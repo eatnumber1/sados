@@ -41,26 +41,26 @@
 ** uncomment its entry in this list.
 */
 
-#define	SPAWN_A		// write, exit
-#define	SPAWN_B		// write, exit
-#define	SPAWN_C		// write, exit
-#define	SPAWN_D		// write, fork, exec, exit
-#define	SPAWN_E		// write, getpid, sleep, exit
-#define	SPAWN_F		// write, getpid, sleep, exit
-#define	SPAWN_G		// write, getpid, sleep, exit
-#define	SPAWN_H		// write
+//#define	SPAWN_A		// write, exit
+//#define	SPAWN_B		// write, exit
+//#define	SPAWN_C		// write, exit
+//#define	SPAWN_D		// write, fork, exec, exit
+//#define	SPAWN_E		// write, getpid, sleep, exit
+//#define	SPAWN_F		// write, getpid, sleep, exit
+//#define	SPAWN_G		// write, getpid, sleep, exit
+//#define	SPAWN_H		// write
 // no user i
-#define	SPAWN_J		// write, fork, exec, exit
-#define	SPAWN_K		// write, sleep, fork, exec, exit
-#define	SPAWN_L		// write, sleep, fork, exec, getticks, exit
-#define	SPAWN_M		// write, fork, exec, sleep, exit
-#define	SPAWN_N		// write, sleep, fork, exec, getticks, getppid, exit
+//#define	SPAWN_J		// write, fork, exec, exit
+//#define	SPAWN_K		// write, sleep, fork, exec, exit
+//#define	SPAWN_L		// write, sleep, fork, exec, getticks, exit
+//#define	SPAWN_M		// write, fork, exec, sleep, exit
+//#define	SPAWN_N		// write, sleep, fork, exec, getticks, getppid, exit
 // no user O
-#define	SPAWN_P		// write, sleep, getticks
-#define	SPAWN_Q		// write, bogus, exit
-#define	SPAWN_R		// write, read, sleep, exit
-#define	SPAWN_S		// write, sleep, forever
-#define	SPAWN_T		// write, getprio, setprio, exit
+//#define	SPAWN_P		// write, sleep, getticks
+//#define	SPAWN_Q		// write, bogus, exit
+//#define	SPAWN_R		// write, read, sleep, exit
+//#define	SPAWN_S		// write, sleep, forever
+//#define	SPAWN_T		// write, getprio, setprio, exit
 // no user U
 // no user V
 
@@ -78,6 +78,8 @@
 /*
 ** Prototypes for externally-visible routines
 */
+
+void test_main (uint_t n, ...);
 
 void idle_main( uint_t n, ... );
 
