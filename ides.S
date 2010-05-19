@@ -2,7 +2,11 @@
 
 #include "ide.h"
 
+.data
+
+    regstring: .string "esp: %x"
 .text
+
 
 .globl _callbios
 
@@ -17,11 +21,23 @@ _callbios:
     movl    $0, %ebx
     movl    8(%ebp), %ebp
     pushl   %cs // because function returns with retf, which pops IP then CS
+    pushl   %esp
+
+    pushl   %esp
+    pushl   $regstring
+    call    c_printf
+    addl    $8, %esp
+
     call    %ebp
 
-//    cli
-//label:
-//    jmp     label
+    pushl   %esp
+    pushl   $regstring
+    call    c_printf
+    addl    $8, %esp
+
+    cli
+label:
+    jmp     label
 
     //movl    $96, %edi
     //lcall   *(%edi)
