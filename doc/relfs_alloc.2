@@ -1,0 +1,18 @@
+.TH relfs_alloc 2  "May 21, 2010" "version 0.1" "System Calls"
+.SH NAME
+relfs_alloc \- allocates data
+.SH SYNOPSIS
+.B relfs_alloc
+fs name size
+.SH DESCRIPTION
+Allocates data on the given filesystem.
+.SH OPTIONS
+.TP
+fs
+the filesystem to allocate data on
+name
+key used to find the data in the relational filesystem
+size
+the size of the memory to be allocated
+.SH EXIT STATUS
+Returns a pointer to a disk node that has been allocated.
