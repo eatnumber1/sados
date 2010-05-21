@@ -1,0 +1,26 @@
+.TH exec 2  "May 21, 2010" "version 0.1" "System Calls"
+.SH NAME
+exec \- replace a process with a different program
+.SH SYNOPSIS
+.B exec
+address n p1 p2 ... pn
+.SH DESCRIPTION
+Make this process switch to the program at the given address.
+.SH OPTIONS
+.TP
+address
+the address of the new program
+.TP
+n
+the number of arguments to be given to the new program
+.TP
+p1 p2 ... pn
+the arguments to be given to the new program
+.SH EXAMPLES
+.TP
+Replace this process with the user_a_main function
+.B exec
+user_a_main 0
+.PP
+.SH EXIT STATUS
+Returns nothing if the exec succeeds, otherwise returns a failure status.

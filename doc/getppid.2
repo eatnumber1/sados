@@ -1,0 +1,20 @@
+.TH getppid 2  "May 21, 2010" "version 0.1" "System Calls"
+.SH NAME
+getppid \- get the parent pid of the specified process
+.SH SYNOPSIS
+.B getppid
+pid
+.SH DESCRIPTION
+Gets the parent PID of the specified process.
+.SH OPTIONS
+.TP
+pid
+the process whose parent we want
+.SH EXAMPLES
+.TP
+Get the ppid of process 15:
+.B getppid
+15
+.PP
+.SH EXIT STATUS
+Returns the PID of the parent process, or an error status.

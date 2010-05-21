@@ -1,0 +1,20 @@
+.TH getprio 2  "May 21, 2010" "version 0.1" "System Calls"
+.SH NAME
+getprio \- get the priority of the specified process
+.SH SYNOPSIS
+.B getprio
+pid
+.SH DESCRIPTION
+Get the priority of the specified process.
+.SH OPTIONS
+.TP
+pid
+the process to get the priority of
+.SH EXAMPLES
+.TP
+Get the priority of process 15:
+.B getprio
+15
+.PP
+.SH EXIT STATUS
+Returns the priority of the specified process.

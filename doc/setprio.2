@@ -1,0 +1,22 @@
+.TH setprio 2  "May 21, 2010" "version 0.1" "System Calls"
+.SH NAME
+setprio \- change the priority of the specified process
+.SH SYNOPSIS
+.B setprio
+pid prio
+.SH DESCRIPTION
+Changes the priority of the specified process and returns the old priority.
+.SH OPTIONS
+.TP
+pid
+the pid of the process to change
+prio
+the new priority of the process
+.SH EXAMPLES
+.TP
+Change the priority of process 15 to 50:
+.B setprio
+15 50
+.PP
+.SH EXIT STATUS
+Returns the old priority of the changed process.

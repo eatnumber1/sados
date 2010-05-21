@@ -1,0 +1,33 @@
+IDE Driver
+Christine Viets
+
+The program find the address of the PCI BIOS. Then, it is
+supposed to do a far call to that address to gain access to
+the BIOS. I tried a lot of different ways to access this
+address, but none of them have worked.
+
+The archlinux solution is to store the code segment and the
+address of the BIOS in memory, and store that memory address
+in %edi, then do "lcall (%edi)" Another version uses
+"lcall *(%edi)". I tried both of these and the each generate
+General Protection Faults or return with an error. I also
+tried to use "pushl %cs; call %edi", where %edi contains the
+address of the BIOS, and this did not work. I am not sure
+what I am doing wrong with this, but it means that my driver
+cannot work, as I cannot locate the address of the hard drive
+I want to use.
+
+I suspect that the reason the lcall code does not work may have
+something to do with the call gate, but I'm really not sure at
+all. In any case, I don't think the call gate needs to be set
+up when using the regular call, but those do not work either.
+
+As I spent the majority of my time trying to solve this problem,
+I did not write my side of the interface between the hard drive
+and the filesystem as it is useless without the driver working.
+I've been trying to fix it up until right now when I'm delayed
+at the airport in Charleston, but I suppose I'll start writing
+the actual read/write code now, even though I don't think I can
+test it without a working driver. I spoke with Russ and he said
+that he can demonstrate his code without mine working since he
+write a simple interface for testing purposes.

@@ -1,0 +1,17 @@
+.TH exit 2  "May 21, 2010" "version 0.1" "System Calls"
+.SH NAME
+exit \- terminate a process
+.SH SYNOPSIS
+.B exit
+status
+.SH DESCRIPTION
+Exit a process with the given status. This doesn't return.
+.SH OPTIONS
+.TP
+status
+the exit status of the process
+.SH EXAMPLES
+.TP
+Exit with status 0:
+.B exit
+0

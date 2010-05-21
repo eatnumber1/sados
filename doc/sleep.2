@@ -1,0 +1,17 @@
+.TH sleep 2  "May 21, 2010" "version 0.1" "System Calls"
+.SH NAME
+sleep \- put the current process to sleep for the specified number of ms
+.SH SYNOPSIS
+.B sleep
+ms
+.SH DESCRIPTION
+Make this process sleep for the given number of milliseconds.
+.SH OPTIONS
+.TP
+ms
+the minimum milliseconds to sleep for
+.SH EXAMPLES
+.TP
+Put the current process to sleep for 10 seconds:
+.B sleep
+10000

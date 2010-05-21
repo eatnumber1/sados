@@ -1,0 +1,25 @@
+.TH fork 2  "May 21, 2010" "version 0.1" "System Calls"
+.SH NAME
+fork \- create a new process
+.SH SYNOPSIS
+.B exit
+priority
+.SH DESCRIPTION
+Create a new process with the given priority.
+Returns -1 if the fork failed,
+the PID of the new child if in the parent,
+or 0 if in the child.
+.SH OPTIONS
+.TP
+priority
+the priority of the new child
+.SH EXAMPLES
+.TP
+Create a child process with priority 10:
+.B fork
+10
+.PP
+.SH EXIT STATUS
+fork returns a zero exist status if it succeeds and is in the child.
+fork returns the PID of the new child if it succeeds and is in the parent.
+-1 is returned in case of failure.

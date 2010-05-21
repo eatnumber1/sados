@@ -1,0 +1,21 @@
+.TH wait 2  "May 21, 2010" "version 0.1" "System Calls"
+.SH NAME
+wait \- get status return from an exited child
+.SH SYNOPSIS
+.B wait
+status_structure
+.SH DESCRIPTION
+Wait for a child process to exit and get its return status.
+.SH OPTIONS
+.TP
+status_structure
+A structure to hold the PID and status of the exited child.
+Also holds the PID of the status to be waited on \- 0 if any child.
+.SH EXAMPLES
+.TP
+Wait for the child with PID 15 to return"
+.B wait
+new status_structure(15, &stat)
+.PP
+.SH EXIT STATUS
+Returns PID and status of exited child in status_structure.
