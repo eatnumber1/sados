@@ -1,0 +1,17 @@
+.TH relfs_mkfs 2  "May 21, 2010" "version 0.1" "System Calls"
+.SH NAME
+relfs_mkfs \- create the filesystem
+.SH SYNOPSIS
+.B relfs_mkfs
+disk inode_table_size
+.SH DESCRIPTION
+Creates a filesystem.
+.SH OPTIONS
+.TP
+disk
+hard drive and partition to make the filesystem on
+.TP
+inode_table_size
+the size of the inode table
+.SH EXIT STATUS
+Returns a pointer to a struct representing the relational filesystem.

@@ -1,0 +1,25 @@
+relfs_read
+
+void relfs_read( relfs_t *fs, disk_node_t *node, char *buf, disk_size_t len );
+
+.TH relfs_read 2  "May 21, 2010" "version 0.1" "System Calls"
+.SH NAME
+relfs_read \- reads data from the filesystem
+.SH SYNOPSIS
+.B relfs_read
+fs node buf len
+.SH DESCRIPTION
+Reads data into a buffer from the filesystem.
+.SH OPTIONS
+.TP
+fs
+the filesystem containing the data
+.TP
+node
+the node containing the data
+.TP
+buf
+the buffer to store the data in
+.TP
+len
+the data length

@@ -1,0 +1,14 @@
+.TH relfs_open 2  "May 21, 2010" "version 0.1" "System Calls"
+.SH NAME
+relfs_open \- opens a filesystem
+.SH SYNOPSIS
+.B relfs_open
+disk
+.SH DESCRIPTION
+Opens a filesystem on the given disk.
+.SH OPTIONS
+.TP
+disk
+the disk that contains the filesystem
+.SH EXIT STATUS
+Returns a pointer to a struct representing the filesystem.

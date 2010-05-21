@@ -1,0 +1,21 @@
+.TH relfs_write 2  "May 21, 2010" "version 0.1" "System Calls"
+.SH NAME
+relfs_write \- write data into the filesystem
+.SH SYNOPSIS
+.B relfs_write
+fs node buf len
+.SH DESCRIPTION
+Writes the given data into the filesystem.
+.SH OPTIONS
+.TP
+fs
+the filesystem the data should be included in
+.TP
+node
+the node to write the data to
+.TP
+buf
+the buffer containing the data
+.TP
+len
+the data length
