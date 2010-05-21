@@ -103,6 +103,9 @@ void _sio_write( int ch );
 
 void _sio_dump( void );
 
+void _sio_puts( char *str );
+void _sio_puti( int num );
+
 #endif
 
 #endif

@@ -14,14 +14,10 @@ sector_t *_buf_to_sector( void *src, int len ) {
 
 	void *src_ptr = src;
 	sector_t *sector_vec = _kalloc(SECTOR_SIZE * num_sectors);
+	_memclr(sector_vec, SECTOR_SIZE * num_sectors);
 	for( int i = 0; i < num_sectors; i++ ) {
-		if( i == num_sectors - 1 ) {
-			_memclr(sector_vec[i], SECTOR_SIZE);
-			_memcpy(sector_vec[i], src_ptr, len);
-		} else {
-			_memcpy(sector_vec[i], src_ptr, SECTOR_SIZE);
-			len -= SECTOR_SIZE;
-		}
+		_memcpy(sector_vec[i], src_ptr, len);
+		len -= SECTOR_SIZE;
 		src_ptr += SECTOR_SIZE;
 	}
 	return sector_vec;
@@ -69,4 +65,8 @@ sector_t *_disk_size_to_sector( disk_size_t addr ) {
 
 disk_size_t _sector_to_disk_size( sector_t *sectors ) {
 	return _sector_to_int(sectors);
+}
+
+disk_size_t _sectors_in( disk_size_t size ) {
+	return ((size / SECTOR_SIZE) + ((size % SECTOR_SIZE != 0) ? 1 : 0));
 }

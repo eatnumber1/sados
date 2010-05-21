@@ -52,6 +52,7 @@
 #include "queues.h"
 #include "processes.h"
 #include "scheduler.h"
+#include "string.h"
 
 #include "startup.h"
 #include <uart.h>
@@ -172,6 +173,7 @@ void _isr_sio( int vector, int code ) {
 			return;
 
 		   default:
+		   	c_printf("eir = %x\n", eir);
 			_kpanic( "sio isr - unknown device status" );
 
 		}
@@ -452,4 +454,19 @@ void _sio_dump( void ) {
 
 	c_putchar( '\n' );
 
+}
+
+void _sio_puts( char *str ) {
+	uint32_t count = 0, len = strlen(str);
+	while( count != len ) {
+		_sio_write(str[count++]);
+	}
+}
+
+#define MAX_DIGITS 1024
+
+void _sio_puti( int num ) {
+	char buf[MAX_DIGITS];
+	itoa(buf, MAX_DIGITS, num);
+	_sio_puts(buf);
 }

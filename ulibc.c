@@ -11,6 +11,7 @@
 */
 
 #include "headers.h"
+#include "string.h"
 
 /*
 ** call_exit - dummy "return to" routine for user main functions
@@ -89,6 +90,50 @@ void prt_status( char *msg, int stat ) {
 			c_printf( "Status code %d\n", stat );
 			break;
 	
+	}
+
+}
+
+#define BACKSPACE 127
+
+uint32_t sio_gets( char *str, uint32_t size ) {
+	// TODO: Handle if the user passes in a size <= 0.
+	uint32_t count = 0;
+	char c;
+	bool buf_full = false;
+	while( true ) {
+		c = read();
+		if( c == BACKSPACE ) {
+			if( count > 0 ) {
+				count--;
+				sio_puts("\b \b");
+				buf_full = false;
+			}
+			continue;
+		}
+		if( !buf_full ) str[count] = c;
+		if( !buf_full || c == '\n' ) write(c);
+		if( c == '\n' ) break;
+		if( !buf_full ) count++;
+		if( count == size - 1 ) buf_full = true;
+	}
+	str[count] = '\0';
+	return count;
+}
+
+void sio_puts( char *str ) {
+	uint32_t count = 0, len = strlen(str);
+	while( count != len ) {
+		write(str[count++]);
+	}
+}
+
+void memclr( void *buffer, uint32_t length ) {
+	register unsigned char *buf = (unsigned char *)buffer;
+	register uint32_t num = length;
+
+	while( num-- ) {
+		*buf++ = 0;
 	}
 
 }

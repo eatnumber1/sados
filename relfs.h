@@ -2,6 +2,7 @@
 #define _RELFS_H
 
 #include "disk.h"
+#include "bool.h"
 
 #define FREE_LIST_ADAPTER_ID 0
 #define RELFS_ADAPTER_ID 1
@@ -31,26 +32,24 @@ typedef struct {
 	disk_size_t length;
 } disk_node_t;
 
-typedef int relfs_view_id;
-
-typedef struct {
-	relfs_view_id id;
-	disk_node_t disk;
-} relfs_view_t;
-
 /*
  * Represents a relfs inode
  */
 typedef struct {
 	disk_node_t key;
-	relfs_view_t value;
-	char allocated;
+	disk_node_t value;
+	bool allocated;
 } relinode_t;
 
 typedef struct {
 	disk_t disk;
 	disk_node_t inodes;
 	disk_node_t data;
+	disk_node_t free;
+
+	// Cache variables
+	diskaddr_t free_ptr;
+	disk_size_t disk_size;
 } relfs_t;
 
 /*
@@ -62,10 +61,21 @@ typedef struct {
  */
 relfs_t *_relfs_mkfs( disk_t disk, disk_size_t inode_table_size );
 
-relfs_t *_relfs_open( disk_t disk );
+void _relfs_dump( relfs_t *fs );
 
+relfs_t *_relfs_open( disk_t disk );
 void _relfs_close( relfs_t *fs );
 
-void _relfs_dump( relfs_t *fs );
+/*
+ * Allocate space from a relfs filesystem.
+ */
+disk_node_t *_relfs_alloc( relfs_t *fs, char *name, disk_size_t size );
+void _relfs_free( disk_node_t *node );
+
+void _relfs_write( relfs_t *fs, disk_node_t *node, char *buf, disk_size_t len );
+void _relfs_read( relfs_t *fs, disk_node_t *node, char *buf, disk_size_t len );
+
+void _relfs_unlink( relfs_t *fs, char *name );
+disk_node_t *_relfs_retrieve( relfs_t *fs, char *name );
 
 #endif

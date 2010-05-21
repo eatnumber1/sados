@@ -16,6 +16,7 @@
 #include "headers.h"
 
 #include "processes.h"
+#include "relfs.h"
 
 /*
 ** General (C and/or assembly) definitions
@@ -202,6 +203,22 @@ void call_exit( void );
 */
 
 void prt_status( char *msg, int stat );
+
+uint32_t sio_gets( char *str, uint32_t size );
+void sio_puts( char *str );
+
+void memclr( void *buffer, uint32_t length );
+
+relfs_t *relfs_mkfs( disk_t *disk, disk_size_t inode_table_size );
+relfs_t *relfs_open( disk_t *disk );
+void relfs_close( relfs_t *fs );
+disk_node_t *relfs_alloc( relfs_t *fs, char *name, disk_size_t size );
+void relfs_free( disk_node_t *node );
+void relfs_write( relfs_t *fs, disk_node_t *node, char *buf, disk_size_t len );
+void relfs_read( relfs_t *fs, disk_node_t *node, char *buf, disk_size_t len );
+void relfs_dump( relfs_t *fs );
+void relfs_unlink( relfs_t *fs, char *name );
+disk_node_t *relfs_retrieve( relfs_t *fs, char *name );
 
 #endif
 

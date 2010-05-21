@@ -35,10 +35,20 @@
 #define	SYS_getprio		9
 #define	SYS_setprio		10
 #define	SYS_getticks		11
+#define SYS_relfs_mkfs		12
+#define SYS_relfs_open		13
+#define SYS_relfs_alloc		14
+#define SYS_relfs_close		15
+#define SYS_relfs_free		16
+#define SYS_relfs_write		17
+#define SYS_relfs_read		18
+#define SYS_relfs_dump		19
+#define SYS_relfs_unlink	20
+#define SYS_relfs_retrieve	21
 
 // number of "real" system calls
 
-#define	N_SYSCALLS		12
+#define	N_SYSCALLS		22
 
 // dummy system call code to test the syscall ISR
 

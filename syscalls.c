@@ -23,6 +23,8 @@
 #include "scheduler.h"
 #include "sio.h"
 #include "startup.h"
+#include "relfs.h"
+#include "disk.h"
 
 // also need the exit() prototype
 #include "ulib.h"
@@ -64,6 +66,64 @@ static void (*_syscalls[N_SYSCALLS])( context_t * );
 **
 **	static void _sys_NAME( context_t *context );
 */
+
+static void _sys_relfs_mkfs( context_t *context ) {
+	disk_t *disk = (disk_t*) ARG(1,context);
+	disk_size_t inode_table_size = ARG(2,context);
+	context->eax = (long) _relfs_mkfs(*disk, inode_table_size);
+}
+
+static void _sys_relfs_open( context_t *context ) {
+	disk_t *disk = (disk_t*) ARG(1,context);
+	context->eax = (long) _relfs_open(*disk);
+}
+
+static void _sys_relfs_alloc( context_t *context ) {
+	relfs_t *fs = (relfs_t*) ARG(1,context);
+	char *name = (char*) ARG(2,context);
+	disk_size_t size = ARG(3,context);
+	context->eax = (long) _relfs_alloc(fs, name, size);
+}
+
+static void _sys_relfs_close( context_t *context ) {
+	_relfs_close((relfs_t*) ARG(1, context));
+}
+
+static void _sys_relfs_free( context_t *context ) {
+	_relfs_free((disk_node_t*) ARG(1, context));
+}
+
+static void _sys_relfs_write( context_t *context ) {
+	relfs_t *fs = (relfs_t*) ARG(1,context);
+	disk_node_t *node = (disk_node_t*) ARG(2,context);
+	char *buf = (char*) ARG(3,context);
+	disk_size_t len = ARG(4,context);
+	_relfs_write(fs, node, buf, len);
+}
+
+static void _sys_relfs_read( context_t *context ) {
+	relfs_t *fs = (relfs_t*) ARG(1,context);
+	disk_node_t *node = (disk_node_t*) ARG(2,context);
+	char *buf = (char*) ARG(3,context);
+	disk_size_t len = ARG(4,context);
+	_relfs_read(fs, node, buf, len);
+}
+
+static void _sys_relfs_dump( context_t *context ) {
+	_relfs_dump((relfs_t*) ARG(1,context));
+}
+
+static void _sys_relfs_unlink( context_t *context ) {
+	relfs_t *fs = (relfs_t*) ARG(1,context);
+	char *name = (char*) ARG(2,context);
+	_relfs_unlink(fs, name);
+}
+
+static void _sys_relfs_retrieve( context_t *context ) {
+	relfs_t *fs = (relfs_t*) ARG(1,context);
+	char *name = (char*) ARG(2,context);
+	context->eax = (long) _relfs_retrieve(fs, name);
+}
 
 /*
 ** _sys_read - read one character from the SIO
@@ -959,6 +1019,16 @@ void _syscall_init( void ) {
 	_syscalls[ SYS_getprio  ]  =  _sys_getprio;
 	_syscalls[ SYS_setprio  ]  =  _sys_setprio;
 	_syscalls[ SYS_getticks ]  =  _sys_getticks;
+	_syscalls[ SYS_relfs_mkfs  ]  =  _sys_relfs_mkfs;
+	_syscalls[ SYS_relfs_open  ]  =  _sys_relfs_open;
+	_syscalls[ SYS_relfs_alloc ]  =  _sys_relfs_alloc;
+	_syscalls[ SYS_relfs_close ]  =  _sys_relfs_close;
+	_syscalls[ SYS_relfs_free  ]  =  _sys_relfs_free;
+	_syscalls[ SYS_relfs_write ]  =  _sys_relfs_write;
+	_syscalls[ SYS_relfs_read  ]  =  _sys_relfs_read;
+	_syscalls[ SYS_relfs_dump  ]  =  _sys_relfs_dump;
+	_syscalls[ SYS_relfs_unlink]  =  _sys_relfs_unlink;
+	_syscalls[ SYS_relfs_retrieve]  =  _sys_relfs_retrieve;
 
 	// report that we've completed this module
 

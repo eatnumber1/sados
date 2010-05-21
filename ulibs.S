@@ -62,6 +62,16 @@ SYSCALL(getppid)
 SYSCALL(getprio)
 SYSCALL(setprio)
 SYSCALL(getticks)
+SYSCALL(relfs_mkfs)
+SYSCALL(relfs_open)
+SYSCALL(relfs_close)
+SYSCALL(relfs_alloc)
+SYSCALL(relfs_free)
+SYSCALL(relfs_write)
+SYSCALL(relfs_read)
+SYSCALL(relfs_dump)
+SYSCALL(relfs_unlink)
+SYSCALL(relfs_retrieve)
 
 /*
 ** This is a bogus system call; it's here so that we can test

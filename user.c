@@ -14,6 +14,8 @@
 
 #include "user.h"
 #include "processes.h"
+#include "bool.h"
+#include "string.h"
 
 /*
 ** USER PROCESSES
@@ -646,6 +648,153 @@ void user_z_main( uint_t n, ... ) {
 
 }
 
+static relfs_t *fs;
+static disk_t disk = { 0, 0 };
+static disk_node_t *node;
+
+static void _u_relfs_mkfs( uint_t argc, char **argv ) {
+	fs = relfs_mkfs(&disk, 15);
+}
+
+static void _u_relfs_open( uint_t argc, char **argv ) {
+	fs = relfs_open(&disk);
+}
+
+static void _u_relfs_alloc( uint_t argc, char **argv ) {
+	if( argc != 3 ) {
+		sio_puts("Usage: alloc name size\n");
+		return;
+	}
+	node = relfs_alloc(fs, argv[1], atoi(argv[2]));
+}
+
+static void _u_relfs_dump( uint_t argc, char **argv ) {
+	relfs_dump(fs);
+}
+
+static void _u_relfs_close( uint_t argc, char **argv ) {
+	relfs_close(fs);
+}
+
+static void _u_relfs_free( uint_t argc, char **argv ) {
+	relfs_free(node);
+}
+
+static void _u_relfs_read( uint_t argc, char **argv ) {
+	if( argc != 2 ) {
+		sio_puts("Usage: read size\n");
+		return;
+	}
+	int size = atoi(argv[1]);
+	char buf[size];
+	relfs_read(fs, node, buf, size);
+	sio_puts(buf);
+	sio_puts("\n");
+}
+
+static void _u_relfs_write( uint_t argc, char **argv ) {
+	if( argc != 2 ) {
+		sio_puts("Usage: write string\n");
+		return;
+	}
+	int size = strlen(argv[1]) + 1;
+	relfs_write(fs, node, argv[1], size);
+}
+
+static void _u_relfs_unlink( uint_t argc, char **argv ) {
+	if( argc != 2 ) {
+		sio_puts("Usage: unlink string\n");
+		return;
+	}
+	relfs_unlink(fs, argv[1]);
+}
+
+static void _u_relfs_retrieve( uint_t argc, char **argv ) {
+	if( argc != 2 ) {
+		sio_puts("Usage: retrieve string\n");
+		return;
+	}
+	node = relfs_retrieve(fs, argv[1]);
+	if( node == NULL ) {
+		sio_puts("Not allocated\n");
+	}
+}
+
+static void _u_help( uint_t argc, char **argv );
+
+static struct shell_command_t {
+	char *command;
+	void (*handler)( uint_t argc, char **argv );
+} shell_commands[] = {
+	{ "mkfs", _u_relfs_mkfs },
+	{ "open", _u_relfs_open },
+	{ "alloc", _u_relfs_alloc },
+	{ "dump", _u_relfs_dump },
+	{ "close", _u_relfs_close },
+	{ "free", _u_relfs_free },
+	{ "read", _u_relfs_read },
+	{ "write", _u_relfs_write },
+	{ "unlink", _u_relfs_unlink },
+	{ "retrieve", _u_relfs_retrieve },
+	{ "help", _u_help },
+	{ NULL, NULL }
+};
+typedef struct shell_command_t shell_command_t;
+
+static void _u_help( uint_t argc, char **argv ) {
+	sio_puts("Available commands are:\n");
+	shell_command_t *cmd = shell_commands;
+	while( cmd->command != NULL ) {
+		sio_puts("  ");
+		sio_puts(cmd->command);
+		sio_puts("\n");
+		cmd++;
+	}
+}
+
+#define SHELL_BUFSIZE 1024
+#define SHELL_MAX_ARGV 10
+
+void shell( uint_t n, ... ) {
+	c_puts("Shell running\n");
+	
+	char buf[SHELL_BUFSIZE];
+	while( true ) {
+		memclr(buf, SHELL_BUFSIZE - 1);
+		sio_puts("% ");
+		sio_gets(buf, SHELL_BUFSIZE);
+		if( strlen(buf) == 0 ) continue;
+
+		char *argv[SHELL_MAX_ARGV];
+		int argv_count = 0;
+		char *buf_ptr = buf;
+		while( argv_count < SHELL_MAX_ARGV ) {
+			char *token = strtok(buf_ptr, ' ');
+			if( token == NULL ) break;
+			buf_ptr = NULL;
+			argv[argv_count++] = token;
+		}
+
+		bool found = false;
+		shell_command_t *cmd = shell_commands;
+		while( cmd->command != NULL ) {
+			if( strcmp(cmd->command, argv[0]) == 0 ) {
+				cmd->handler(argv_count, argv);
+				found = true;
+				break;
+			}
+			cmd++;
+		}
+		if( !found ) {
+			sio_puts("Command not found: ");
+			for( int i = 0; i < argv_count; i++ ) {
+				sio_puts(argv[i]);
+				sio_puts(" ");
+			}
+			sio_puts("\nTry \"help\"\n");
+		}
+	}
+}
 
 /*
 ** SYSTEM PROCESSES
@@ -665,12 +814,12 @@ void idle_main( uint_t n, ... ) {
 	priority = getprio( pid );
 	c_printf( "Idle process (%d) started, prio %08x\n", pid, priority );
 
-	write( '.' );
+	//write( '.' );
 
 	for(;;) {
 		for( i = 0; i < LONG_DELAY; ++i )
 			continue;
-		write( '.' );
+	//	write( '.' );
 	}
 
 	c_puts( "+++ Idle process done!?!?!\n" );
@@ -690,7 +839,7 @@ void init_main( uint_t n, ... ) {
 
 	c_puts( "Init started\n" );
 
-	write( '$' );
+	//write( '$' );
 
 	/*
 	** Always start the idle process first
@@ -702,6 +851,15 @@ void init_main( uint_t n, ... ) {
 	} else if( pid == 0 ) {
 		exec( idle_main, 0 );
 		c_puts( "init: can't exec idle\n" );
+		exit( STAT_FAILURE );
+	}
+
+	pid = fork( PRIO_STD );
+	if( pid < 0 ) {
+		c_puts( "init: can't fork shell\n" );
+	} else if( pid == 0 ) {
+		exec( shell, 0 );
+		c_puts( "init: can't exec shell\n" );
 		exit( STAT_FAILURE );
 	}
 
@@ -903,7 +1061,7 @@ void init_main( uint_t n, ... ) {
 	}
 #endif
 
-	write( '!' );
+	//write( '!' );
 
 	/*
 	** At this point, we go into an infinite loop

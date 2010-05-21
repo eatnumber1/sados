@@ -113,29 +113,21 @@ void _init( void ) {
 	 */
 	_kalloc_init();
 
+	/*
 	disk_t disk;
 	disk.diskno = 0;
 	disk.partno = 0;
-	/*
-	char *string = "Hello World!";
-	int len = strlen(string) + 1;
-	error_t err = _disk_write(disk, 0, 1, _buf_to_sector(string, len));
-	if( err != NO_ERROR ) {
-		_kpanic(_disk_strerror(err));
-	}
-	c_printf("Wrote string: %s\n", string);
-	sector_t sector_read_data[1];
-	err = _disk_read( disk, 0, 1, sector_read_data );
-	if( err != NO_ERROR ) {
-		_kpanic(_disk_strerror(err));
-	}
-	c_printf("Read back string: %s\n", _sector_to_buf(sector_read_data, 1));
-	*/
 	relfs_t *fs = _relfs_mkfs(disk, (_disk_size(disk) - 1) / 2);
+	disk_node_t *node = _relfs_alloc(fs, "A", 1);
+
+	sector_t *sec = _buf_to_sector("Hello", strlen("Hello") + 1);
+	_disk_write(disk, node->start, _sectors_in(strlen("Hello") + 1), sec);
+	_kfree(sec);
+
 	_relfs_dump(fs);
 
 	_kpanic("Done");
-
+	*/
 
 	/*
 	** Create the initial process
