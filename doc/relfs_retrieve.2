@@ -1,11 +1,11 @@
 .TH relfs_retrieve 2  "May 21, 2010" "version 0.1" "System Calls"
 .SH NAME
-relfs_retrieve \- retrieves a node
+relfs_retrieve \- retrieves a key-value pair from the disk
 .SH SYNOPSIS
 .B relfs_retrieve
 fs name
 .SH DESCRIPTION
-Retrieves a node.
+Retrieves a key-value pair from the disk.
 .SH OPTIONS
 .TP
 fs
@@ -14,4 +14,4 @@ the filesystem
 name
 the key
 .SH EXIT STATUS
-Returns a pointer to the retrieved filesystem
+Returns a pointer to the retrieved pair.
