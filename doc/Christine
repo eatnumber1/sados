@@ -31,3 +31,33 @@ the actual read/write code now, even though I don't think I can
 test it without a working driver. I spoke with Russ and he said
 that he can demonstrate his code without mine working since he
 write a simple interface for testing purposes.
+
+If I were to do this class over, I think I would pick the same
+project. I did really like this project, even though it doesn't
+work. I'm going to try to figure out what is wrong with it in the
+future. I think one of my biggest problems was that I was so
+busy this quarter, even though I managed to devote a lot of time
+to work on this code. I don't know if this matters, but I really
+sacrificed recreational time this quarter, so I don't think that
+I failed because I didn't put in enough work. I think I just
+didn't know what I was doing soon enough and didn't ask for the
+right help at the right times. So, next time, I will ask lots of
+questions if I don't understand.
+
+I found out that Linux source code is poorly explained in
+comments. It is kinda stupid. All the versions of the PCI BIOS
+code I could find did basically the same thing in extended
+assembly inline and none of them even commented the parameters
+so it took me like two weeks to realize that it was the address
+of the address plus the code segment that was actually in %edi.
+In fact, it actually took me finding some inline assembly where
+a lcall was not done, but a regular call was, and the code segment
+register was pushed before the call to realize what the lcall
+version was doing. I find it really frustrating that I believe
+I am doing the same thing that they are doing in the Linux files,
+yet my program is not working.
+
+In all, I did enjoy this class. I would have felt a lot better if
+my code worked, of course... But oh well, can't be changed now.
+Maybe I will retake this class if it fits into my schedule in the
+future and I can try again.
