@@ -5,6 +5,7 @@
 #define BEGIN_SEARCH    0xE0000
 #define END_SEARCH      0xFFFFF
 
+long bios32_call;
 
 /*
 struct pciheader {
@@ -44,9 +45,11 @@ typedef union {
 static struct {
     unsigned long address;
     unsigned short segment;
-} bios32_indirect = { 0, __KERNEL_CS };
+} bios32_indirect = { 0, 10 };
 
 void findbios() {
+
+    bios32_call = 0;
 
     /* Look for the BIOS32 Service Directory */
     char *i;
@@ -64,7 +67,7 @@ void findbios() {
             if ((int)sum != 0) {
                 b = 0;
             } else {
-                c_printf ("Yayy! %d: %c%c%c%c\n", &i, i[0], i[1], i[2], i[3]);
+                c_printf ("Yayy! %x: %c%c%c%c\n", &i, i[0], i[1], i[2], i[3]);
             }
         }
     }
@@ -79,19 +82,31 @@ void findbios() {
     unsigned long entry;    
     unsigned long flags;
 
-//    __asm__("pushal; call *(%%edi); cld; popal"
+    bios32_indirect.address = (long)b->entry_point;
+    bios32_call = (long)b->entry_point;
+
+    __asm__("lcall (%%edi)"
     //__asm__("push %%cs; call *(%%edx); cld"
-    //        : "=a" (return_code),
-    //          "=b" (address),
-    //          "=c" (length),
-    //          "=d" (entry)
-    //        : "0"  (0x49435024), //(b->entry_point),
-    //          "1"  (0),
-	//      "3"  (b->entry_point), 
-         //     "D"  (&bios32_indirect));
+            : "=a" (return_code),
+              "=b" (address),
+              "=c" (length),
+              "=d" (entry)
+            : "0"  (0x49435024), //(b->entry_point),
+              "1"  (0),
+    //          "3"  (b->entry_point), 
+              "D"  (&bios32_indirect));
 
+//    __asm__("movl $0x49435024, %%eax\n"
+//            "xorl %%ebx, %%ebx\n"
+//            "lcall _bios32_call\n"
+//            : "=c" (length),
+//              "=d" (entry),
+//              "=b" (address)
+//            :
+//            : "eax", "ebx", "ecx", "edx", "ebp", "memory" );
 
-    _callbios(b->entry_point);
+    //_callbios(//&bios32_indirect);
+      //        b->entry_point);
 
     c_printf ("Returned from callbios\n");
 
