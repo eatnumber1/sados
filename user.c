@@ -5,7 +5,7 @@
 **
 ** Author:	4003-506 class of 20093
 **
-** Contributor:
+** Contributor: Christine Viets (cev5122)
 **
 ** Description:	User routines.
 */

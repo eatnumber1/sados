@@ -1,3 +1,5 @@
+// author - Christine Viets (cev5122)
+
 #include "headers.h"
 #include "ide.h"
 #include "klib.h"

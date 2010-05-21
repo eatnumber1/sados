@@ -1,3 +1,5 @@
+// author - Christine Viets (cev5122)
+
 #ifndef _IDE_H
 #define _IDE_H
 
