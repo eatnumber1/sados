@@ -1,0 +1,37 @@
+The relational filesystem works similarly to a relational database. Data is
+manipulated using string "keys".
+
+On the disk, the data layout is as follows:
+
+Whole Disk:
++----------------+-------------------+
+|                |            |      |
+| iNodeTableSize | iNodeTable | Data |
+|                |            |      |
++----------------+-------------------+
+
+iNodeTableSize: A single sector representing the size of the iNodeTable
+
+iNodeTable: Fixed size array of inodes.
++-----------------------+
+| iNode | iNode | iNode |
++-----------------------+
+
+Data: Non-fixed size array of allocated data.
+
+iNode:
++---------------------------------+
+| DataNode | DataNode | Allocated |
++---------------------------------+
+
+DataNode: A logical contiguous amount of data. (a pointer into the data block).
++----------------+
+| Start | Length |
++----------------+
+
+Allocated: A boolean to indicate that this node points to "live" data.
+
+Refer to the comments in relfs.h for a description of the in-memory structures.
+
+Note that the commands for the shell I wrote is not documented,
+because the shell was designed solely for demonstration purposes.

@@ -188,7 +188,7 @@ void _relfs_free( disk_node_t *node ) {
 
 void _relfs_write( relfs_t *fs, disk_node_t *node, char *buf, disk_size_t len ) {
 	disk_size_t sector_len = _sectors_in(len);
-	assert(node->length <= sector_len, "Buffer length too big");
+	assert(node->length >= sector_len, "Buffer length too big");
 	sector_t *sec = _buf_to_sector(buf, len);
 	_disk_write(fs->disk, node->start, sector_len, sec);
 	_kfree(sec);
@@ -196,7 +196,7 @@ void _relfs_write( relfs_t *fs, disk_node_t *node, char *buf, disk_size_t len ) 
 
 void _relfs_read( relfs_t *fs, disk_node_t *node, char *buf, disk_size_t len ) {
 	disk_size_t sector_len = _sectors_in(len);
-	assert(node->length <= sector_len, "Buffer length too big");
+	assert(node->length >= sector_len, "Buffer length too big");
 	sector_t sec[sector_len];
 	_disk_read(fs->disk, node->start, sector_len, sec);
 	char *buf2 = _sector_to_buf(sec, sector_len);

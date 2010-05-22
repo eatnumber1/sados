@@ -92,6 +92,11 @@ void _init( void ) {
 	c_puts( "\n" );
 
 	/*
+	 * Initialize the kernel memory allocator
+	 */
+	_kalloc_init();
+
+	/*
 	** Create the initial system ESP
 	**
 	** This will be the address of the next-to-last
@@ -107,11 +112,6 @@ void _init( void ) {
 	__install_isr( INT_VEC_TIMER, _isr_clock );
 	__install_isr( INT_VEC_SYSCALL, _isr_syscall );
 	__install_isr( INT_VEC_SERIAL_PORT_1, _isr_sio );
-
-	/*
-	 * Initialize the kernel memory allocator
-	 */
-	_kalloc_init();
 
 	/*
 	disk_t disk;

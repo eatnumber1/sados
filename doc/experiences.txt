@@ -1,0 +1,22 @@
+Russell Harmon:
+	My team was very disconnected. Within the first few weeks, myself and
+	Christine had formally defined the API between her driver and my
+	filesystem. After that, we were just going to go and work on it and
+	integrate when we were done. It wasn't until week 10 that I found out
+	that she had not been able to get anything working and so had stopped
+	working on it. Were I taking this class over, I would have had
+	scheduled weekly meetings where my entire team worked on the operating
+	system together.
+
+	As for myself, I am mostly satisfied with my work. The only major
+	thing I would have changed is that I would have tested on the DSL
+	machines long ago rather than on the day of my presentation.
+
+	Had I had more time, some things I would have implemented, in order of
+	precedence include:
+	- Resizable data
+	- An on-disk free list (which would allow reclamation of deleted data
+	  without defragmentation).
+	- Randomization of the placement of allocated data (don't just grow
+	  the disk linearly). This would help to eliminate fragmentation.
+	- Defragmentation

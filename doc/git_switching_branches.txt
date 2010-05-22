@@ -1,0 +1,15 @@
+To switch between branches in the git repository submitted, use the command
+
+git checkout branchname
+
+To list the branches, use
+
+git branch
+
+To switch to Russell's branch, use
+
+git checkout filesystem
+
+To switch to Christine's branch, use
+
+git checkout ide
